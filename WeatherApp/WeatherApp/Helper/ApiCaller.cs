@@ -35,7 +35,7 @@ namespace WeatherApp.Helper
     {
         
         // als errormessage == nul dan is de Api call succesvol
-        public bool Succesful => ErrorMessage == null;
+        public bool Successful => ErrorMessage == null;
         public string ErrorMessage { get; set; }
         public string Response { get; set; }
     }

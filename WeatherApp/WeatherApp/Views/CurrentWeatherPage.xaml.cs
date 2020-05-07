@@ -18,18 +18,19 @@ namespace WeatherApp.Views
         {
             InitializeComponent();
             GetWeatherInfo();
+            
         }
 
-        private string Location = "Lanaken";
+        private string Location = "Paris";
 
         private async void GetWeatherInfo()
         {
-            //Location wordt uit de string Location gehaald
+            //API request van huidige weersituatie voor var Location
             var url = $"http://api.openweathermap.org/data/2.5/weather?q=" + Location + "&APPID=70c9d17ec1211e30b75ac292a72d685e&units=metric";
 
             var result = await ApiCaller.Get(url);
 
-            if (result.Succesful)
+            if (result.Successful)
             {
                 try
                 {
@@ -41,6 +42,7 @@ namespace WeatherApp.Views
                     iconImg.Source = $"w{weatherInfo.weather[0].icon}";
                     cityTxt.Text = weatherInfo.name.ToUpper();
                     temperatureTxt.Text = weatherInfo.main.temp.ToString("0");
+                    temperatureFeelTxt.Text = "Feels like " + weatherInfo.main.feels_like.ToString("0") + "°";
                     humidityTxt.Text = $"{weatherInfo.main.humidity}%";
                     pressureTxt.Text = $"{weatherInfo.main.pressure} hpa";
                     windTxt.Text = $"{weatherInfo.wind.speed} m/s";
@@ -49,6 +51,9 @@ namespace WeatherApp.Views
                     //converie van het UNIX UTC tijdsformaat naar algemeen datumformaat
                     var dt = new DateTime().ToUniversalTime().AddSeconds(weatherInfo.dt);
                     dateTxt.Text = dt.ToString("dddd, MMM dd").ToUpper();
+
+                    // roep voorspelling aan
+                    GetForecast();
 
                 }
                 catch (Exception ex)
@@ -65,5 +70,70 @@ namespace WeatherApp.Views
                 await DisplayAlert("Weather Info", "No weatherinformation found", "OK");
             }
         }
+
+        private async void GetForecast()
+        {
+            // API request van weersvoorspelling van de komende dagen voor var Location
+            var url = $"http://api.openweathermap.org/data/2.5/forecast?q=" + Location + "&APPID=70c9d17ec1211e30b75ac292a72d685e&units=metric";
+
+            var result = await ApiCaller.Get(url);
+
+            if (result.Successful)
+            {
+                try
+                {
+                    //converteer JSON van weersvoorspelling
+                    var forcastInfo = JsonConvert.DeserializeObject<ForecastInfo>(result.Response);
+
+                    List<List> allList = new List<List>();
+
+                    //Steek de voorspelling in een lijst
+                    foreach (var list in forcastInfo.list)
+                    {
+                        //De openweather API geeft de voorspelling op uurlijke basis, we parsen de data zodat we een dagelijkse voorspelling hebben
+                        //var date = DateTime.ParseExact(list.dt_txt, "yyyy-MM-dd hh:mm:ss", CultureInfo.InvariantCulture);
+                        var date = DateTime.Parse(list.dt_txt);
+
+                        //enkel de dagen na de huidige dag worden in de voorspelling opgenomen
+                        if (date > DateTime.Now && date.Hour == 0 && date.Minute == 0 && date.Second == 0)
+                            allList.Add(list);
+                    }
+
+                    //Steek resultaat in kader 1 (morgen)
+                    dayOneTxt.Text = DateTime.Parse(allList[0].dt_txt).ToString("dddd");
+                    dateOneTxt.Text = DateTime.Parse(allList[0].dt_txt).ToString("dd MMM");
+                    iconOneImg.Source = $"w{allList[0].weather[0].icon}";
+                    tempOneTxt.Text = allList[0].main.temp.ToString("0");
+
+                    //steek resultaat in kader 2 (overmorgen)
+                    dayTwoTxt.Text = DateTime.Parse(allList[1].dt_txt).ToString("dddd");
+                    dateTwoTxt.Text = DateTime.Parse(allList[1].dt_txt).ToString("dd MMM");
+                    iconTwoImg.Source = $"w{allList[1].weather[0].icon}";
+                    tempTwoTxt.Text = allList[1].main.temp.ToString("0");
+
+                    //steek resultaat in kader 3 (3 dagen vanaf nu)
+                    dayThreeTxt.Text = DateTime.Parse(allList[2].dt_txt).ToString("dddd");
+                    dateThreeTxt.Text = DateTime.Parse(allList[2].dt_txt).ToString("dd MMM");
+                    iconThreeImg.Source = $"w{allList[2].weather[0].icon}";
+                    tempThreeTxt.Text = allList[2].main.temp.ToString("0");
+
+                    //steek resultaat in kader 4 (4dagen vanaf nu)
+                    dayFourTxt.Text = DateTime.Parse(allList[3].dt_txt).ToString("dddd");
+                    dateFourTxt.Text = DateTime.Parse(allList[3].dt_txt).ToString("dd MMM");
+                    iconFourImg.Source = $"w{allList[3].weather[0].icon}";
+                    tempFourTxt.Text = allList[3].main.temp.ToString("0");
+
+                }
+                catch (Exception ex)
+                {
+                    await DisplayAlert("Weather Info", ex.Message, "OK");
+                }
+            }
+            else
+            {
+                await DisplayAlert("Weather Info", "No forecast information found", "OK");
+            }
+        }
+
     }
 }
