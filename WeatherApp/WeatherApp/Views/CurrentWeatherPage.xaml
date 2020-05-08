@@ -19,11 +19,11 @@
             
             <!--Achtergrondafbeelding met doorzichtige overlay-->
             <BoxView Grid.RowSpan="2" BackgroundColor="#7585BA" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
-            <Image x:Name="bgImg" Aspect="AspectFill" Grid.RowSpan="2" Source="bg.png" Opacity="0.5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+            <Image x:Name="bgImg" Aspect="AspectFill" Grid.RowSpan="2" Source="bg.png" Opacity="0.7" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
             <Image Aspect="AspectFill" Grid.RowSpan="2" Source="overlay.png" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
 
-            <!--Menu knop linksboven-->
-            <ImageButton Source="menu.png" Margin="20" WidthRequest="23" HeightRequest="15" HorizontalOptions="Start" VerticalOptions="Center" />
+            <!--Refresh knop linksboven-->
+            <ImageButton Source="refresh.png" Clicked="OnRefreshClicked"  Margin="20" IsEnabled="True" WidthRequest="30" Opacity="0.8" CornerRadius="20" BackgroundColor="#758ABA" HeightRequest="30" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" />
 
             <Grid Grid.Row="1">
                 <!--spacing tussen de elementen is 20-->
@@ -36,8 +36,8 @@
                             <Label x:Name="descriptionTxt" Text="Cloudy" TextColor="White" FontSize="13" HorizontalOptions="Center"/>
                         </StackLayout>
                         <!--locatie & datum-->
-                        <StackLayout VerticalOptions="Center">
-                            <Label x:Name="cityTxt" Text="LONDON" TextColor="White" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+                        <StackLayout VerticalOptions="Center"
+                            <Entry x:Name="cityTxt" ReturnType="Search" TextColor="White" Completed="Entry_Completed" FontSize="20" FontAttributes="Bold" IsSpellCheckEnabled="False" WidthRequest="180" ClearButtonVisibility="WhileEditing" HorizontalTextAlignment="Center" />
                             <Label x:Name="dateTxt" Text="SATURDAY, NOV 30" TextColor="White" FontSize="13" HorizontalOptions="Center"/>
                         </StackLayout>
                     </StackLayout>

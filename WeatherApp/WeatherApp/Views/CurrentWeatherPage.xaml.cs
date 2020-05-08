@@ -22,6 +22,7 @@ namespace WeatherApp.Views
 
             //vraag locatie op
             GetCoordinates();
+            
 
 
             
@@ -91,7 +92,7 @@ namespace WeatherApp.Views
                     //steek de weerinfo in de corresponderende vakken
                     descriptionTxt.Text = weatherInfo.weather[0].description.ToUpper();
                     iconImg.Source = $"w{weatherInfo.weather[0].icon}";
-                    cityTxt.Text = weatherInfo.name.ToUpper() + " " + weatherInfo.sys.country.ToUpper();
+                    cityTxt.Text = weatherInfo.name.ToUpper(); // + " " + weatherInfo.sys.country.ToUpper();
                     temperatureTxt.Text = weatherInfo.main.temp.ToString("0");
                     temperatureFeelTxt.Text = "Feels like " + weatherInfo.main.feels_like.ToString("0") + "°";
                     humidityTxt.Text = $"{weatherInfo.main.humidity}%";
@@ -140,11 +141,12 @@ namespace WeatherApp.Views
                     //Steek de voorspelling in een lijst
                     foreach (var list in forcastInfo.list)
                     {
-                        //De openweather API geeft de voorspelling op uurlijke basis, we parsen de data zodat we een dagelijkse voorspelling hebben
+                        //De openweather forecast API geeft de voorspelling op 3 uurlijke basis, we parsen (ontleden) de data
                         var date = DateTime.Parse(list.dt_txt);
 
                         //enkel de dagen na de huidige dag worden in de voorspelling opgenomen
-                        if (date > DateTime.Now && date.Hour == 0 && date.Minute == 0 && date.Second == 0)
+                        // we kiezen om de situatie rond de middag weer te geven omdat dit de het meest relevante is
+                        if (date > DateTime.Now && date.Hour == 12 && date.Minute == 0 && date.Second == 0)
                             allList.Add(list);
                     }
 
@@ -205,6 +207,19 @@ namespace WeatherApp.Views
                     new Uri(bgInfo.photos[new Random().Next(0, bgInfo.photos.Length-1)].src.medium));
                 
             }
+        }
+
+        private void OnRefreshClicked(object sender, EventArgs e)
+        {
+            //refresh de locatie en weer gegevens
+            GetCoordinates();
+        }
+
+        private void Entry_Completed(object sender, EventArgs e)
+        {
+            //verander de locatie naar de door de gebruiker opgegeven locatie en vraag hiervoor de weerinfo op
+            Location = cityTxt.Text;
+            GetWeatherInfo();
         }
     }
 }

@@ -214,4 +214,7 @@
   <ItemGroup>
     <BundleResource Include="Resources\wind.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\refresh.png" />
+  </ItemGroup>
 </Project>
