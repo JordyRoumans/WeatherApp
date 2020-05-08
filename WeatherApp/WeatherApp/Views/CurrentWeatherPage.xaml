@@ -21,9 +21,16 @@
             <BoxView Grid.RowSpan="2" BackgroundColor="#7585BA" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
             <Image x:Name="bgImg" Aspect="AspectFill" Grid.RowSpan="2" Source="bg.png" Opacity="0.7" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
             <Image Aspect="AspectFill" Grid.RowSpan="2" Source="overlay.png" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+            
 
-            <!--Refresh knop linksboven-->
-            <ImageButton Source="refresh.png" Clicked="OnRefreshClicked"  Margin="20" IsEnabled="True" WidthRequest="30" Opacity="0.8" CornerRadius="20" BackgroundColor="#758ABA" HeightRequest="30" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" />
+
+ 
+            <!--switch om te schakelen tuusen imperial en metric units-->
+            <StackLayout Margin="20">
+                <Switch IsToggled="False" Toggled="OnToggled" ThumbColor="#758ABA" OnColor="White" WidthRequest="60" HorizontalOptions="End" />
+                <Label x:Name="unitsTxt" Text="METRIC"   TextColor="White" FontSize="13" HorizontalOptions="End"/>
+            </StackLayout>
+
 
             <Grid Grid.Row="1">
                 <!--spacing tussen de elementen is 20-->
@@ -36,7 +43,7 @@
                             <Label x:Name="descriptionTxt" Text="Cloudy" TextColor="White" FontSize="13" HorizontalOptions="Center"/>
                         </StackLayout>
                         <!--locatie & datum-->
-                        <StackLayout VerticalOptions="Center"
+                        <StackLayout VerticalOptions="Center">
                             <Entry x:Name="cityTxt" ReturnType="Search" TextColor="White" Completed="Entry_Completed" FontSize="20" FontAttributes="Bold" IsSpellCheckEnabled="False" WidthRequest="180" ClearButtonVisibility="WhileEditing" HorizontalTextAlignment="Center" />
                             <Label x:Name="dateTxt" Text="SATURDAY, NOV 30" TextColor="White" FontSize="13" HorizontalOptions="Center"/>
                         </StackLayout>
@@ -50,6 +57,9 @@
                         </StackLayout>
                         <Label Text="CELSIUS" Margin="0,-30,0,0" TextColor="White" FontSize="13" HorizontalOptions="Center"/>
                         <Label x:Name="temperatureFeelTxt" Text="°" Margin="0,0,0,0" TextColor="White" FontSize="16" HorizontalOptions="Center"/>
+                        <!--Refresh knop-->
+                        <ImageButton Source="refresh.png" Clicked="OnRefreshClicked" Margin="20" IsEnabled="True" WidthRequest="45" Opacity="0.8" CornerRadius="20" BackgroundColor="Transparent" HeightRequest="45" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+
                     </StackLayout>
                     <!--Grid met luchtvochtigheid, wind, luchtdruk en bewolking-->
                     <Grid WidthRequest="320" ColumnSpacing="10" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">

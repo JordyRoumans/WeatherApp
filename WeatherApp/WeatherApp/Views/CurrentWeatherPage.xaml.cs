@@ -22,15 +22,19 @@ namespace WeatherApp.Views
 
             //vraag locatie op
             GetCoordinates();
-            
 
 
-            
+
+
+
         }
 
         private string Location { get; set; } = "Paris";
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        private string Units = "metric";
+        private string Speed = "m/s";
+        private Boolean bgBool = true;
 
         
         private async void GetCoordinates()
@@ -78,7 +82,7 @@ namespace WeatherApp.Views
         {
             
             //API request van huidige weersituatie voor var Location
-            var url = $"http://api.openweathermap.org/data/2.5/weather?q=" + Location + "&APPID=70c9d17ec1211e30b75ac292a72d685e&units=metric";
+            var url = $"http://api.openweathermap.org/data/2.5/weather?q={Location}&APPID=70c9d17ec1211e30b75ac292a72d685e&units={Units}";
 
             var result = await ApiCaller.Get(url);
 
@@ -97,15 +101,20 @@ namespace WeatherApp.Views
                     temperatureFeelTxt.Text = "Feels like " + weatherInfo.main.feels_like.ToString("0") + "°";
                     humidityTxt.Text = $"{weatherInfo.main.humidity}%";
                     pressureTxt.Text = $"{weatherInfo.main.pressure} hpa";
-                    windTxt.Text = $"{weatherInfo.wind.speed} m/s";
+                    windTxt.Text = $"{weatherInfo.wind.speed} {Speed}";
                     cloudinessTxt.Text = $"{weatherInfo.clouds.all}%";
                     // huidige datum invullen
                     dateTxt.Text = DateTime.Now.ToString("dddd, MMM dd").ToUpper();
 
                     // roep voorspelling aan
                     GetForecast();
-                    //zoek voor passende achtergrond
-                    GetBackground();
+
+                    if (bgBool == true)
+                    {
+                        //zoek voor passende achtergrond
+                        GetBackground();
+                    }
+
 
                 }
                 catch (Exception ex)
@@ -125,7 +134,7 @@ namespace WeatherApp.Views
         private async void GetForecast()
         {
             // API request van weersvoorspelling van de komende dagen voor var Location
-            var url = $"http://api.openweathermap.org/data/2.5/forecast?q=" + Location + "&APPID=70c9d17ec1211e30b75ac292a72d685e&units=metric";
+            var url = $"http://api.openweathermap.org/data/2.5/forecast?q={Location}&APPID=70c9d17ec1211e30b75ac292a72d685e&units={Units}";
 
             var result = await ApiCaller.Get(url);
 
@@ -213,12 +222,39 @@ namespace WeatherApp.Views
         {
             //refresh de locatie en weer gegevens
             GetCoordinates();
+
         }
 
         private void Entry_Completed(object sender, EventArgs e)
         {
             //verander de locatie naar de door de gebruiker opgegeven locatie en vraag hiervoor de weerinfo op
+            
             Location = cityTxt.Text;
+            bgBool = true;
+            GetWeatherInfo();
+
+
+        }
+
+        private void OnToggled(object sender, ToggledEventArgs e)
+        {
+            // als units op metric staan verander naar imperial en andersom, doe vervolgens een nieuwe api request met deze units
+            if (Units=="metric")
+            {
+                Units = "imperial";
+                Speed = "f/s";
+                unitsTxt.Text = "IMPERIAL";
+                
+
+            }
+            else
+            {
+                Units = "metric";
+                Speed = "f/s";
+                unitsTxt.Text = "METRIC";
+
+            }
+            bgBool = false;
             GetWeatherInfo();
         }
     }
