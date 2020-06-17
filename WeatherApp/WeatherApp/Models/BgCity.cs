@@ -4,6 +4,7 @@ using System.Text;
 
 namespace WeatherApp.Models
 {
+    //Deze klasse is gebaseerd op de Pexels API
     public class BackgoundInfo
     {
         public int total_results { get; set; }

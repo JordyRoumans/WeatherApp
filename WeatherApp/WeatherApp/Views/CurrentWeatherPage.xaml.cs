@@ -250,7 +250,7 @@ namespace WeatherApp.Views
             else
             {
                 Units = "metric";
-                Speed = "f/s";
+                Speed = "m/s";
                 unitsTxt.Text = "METRIC";
 
             }

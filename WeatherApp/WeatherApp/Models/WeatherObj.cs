@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WeatherApp.Models
 {
-    //Deze klasse is gebaseeurd op de JSON van de openweathermap API
+    //Deze klasse is gebaseerd op de JSON van de openweathermap API
     public class ForecastInfo
     {
         public string cod { get; set; }
