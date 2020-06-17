@@ -55,7 +55,7 @@
                             <Label x:Name="temperatureTxt" Text="25" TextColor="White" FontSize="150" HorizontalOptions="Center"/>
                             <Label Text="°" TextColor="White" FontSize="150" HorizontalOptions="Center"/>
                         </StackLayout>
-                        <Label Text="CELSIUS" Margin="0,-30,0,0" TextColor="White" FontSize="13" HorizontalOptions="Center"/>
+                        <Label Text="CELSIUS" x:Name="unitsTempTxt" Margin="0,-30,0,0" TextColor="White" FontSize="13" HorizontalOptions="Center"/>
                         <Label x:Name="temperatureFeelTxt" Text="°" Margin="0,0,0,0" TextColor="White" FontSize="16" HorizontalOptions="Center"/>
                         <!--Refresh knop-->
                         <ImageButton Source="refresh.png" Clicked="OnRefreshClicked" Margin="20" IsEnabled="True" WidthRequest="45" Opacity="0.8" CornerRadius="20" BackgroundColor="Transparent" HeightRequest="45" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />

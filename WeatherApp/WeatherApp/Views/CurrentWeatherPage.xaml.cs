@@ -244,7 +244,7 @@ namespace WeatherApp.Views
                 Units = "imperial";
                 Speed = "f/s";
                 unitsTxt.Text = "IMPERIAL";
-                
+                unitsTempTxt.Text = "FAHRENHEIT";
 
             }
             else
@@ -252,6 +252,7 @@ namespace WeatherApp.Views
                 Units = "metric";
                 Speed = "m/s";
                 unitsTxt.Text = "METRIC";
+                unitsTempTxt.Text = "CELSIUS";
 
             }
             bgBool = false;
